@@ -1,26 +1,58 @@
+import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 
 function ProviderModal({
   provider,
   onClose,
 }) {
+  const closeButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (!provider) return undefined;
+
+    const previousFocus = document.activeElement;
+    closeButtonRef.current?.focus();
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previousFocus?.focus();
+    };
+  }, [onClose, provider]);
+
   if (!provider) return null;
 
   return (
     <div
       className="modal-overlay"
+      role="presentation"
       onClick={onClose}
     >
 
       <div
         className="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="provider-modal-title"
         onClick={(e) => e.stopPropagation()}
       >
 
         <div className="modal-header">
-          <h3>User Details</h3>
+          <h3 id="provider-modal-title">User Details</h3>
 
-          <button onClick={onClose}>
+          <button
+            ref={closeButtonRef}
+            type="button"
+            aria-label="Close provider details"
+            onClick={onClose}
+          >
             <X size={18} />
           </button>
         </div>
@@ -69,9 +101,10 @@ function ProviderModal({
           </div>
 
           <div className="notes">
-            <strong>Internal Notes</strong>
+            <label htmlFor="internal-notes">Internal Notes</label>
 
             <textarea
+              id="internal-notes"
               placeholder="Add internal notes..."
             />
           </div>
@@ -81,6 +114,7 @@ function ProviderModal({
         <div className="modal-actions">
 
           <button
+            type="button"
             className="onboard-button"
             onClick={onClose}
           >
@@ -88,6 +122,7 @@ function ProviderModal({
           </button>
 
           <button
+            type="button"
             className="reject-button"
             onClick={onClose}
           >

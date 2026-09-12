@@ -287,18 +287,31 @@ function App() {
           onClear={handleClearFilters}
         />
 
-        <main className="main-content">
+        <main
+          className="main-content"
+          aria-labelledby="page-title"
+        >
 
           <div className="page-title">
             <div>
-              <h1>Waitlist</h1>
+              <h1 id="page-title">Waitlist</h1>
 
-              <div className="tabs">
-                <button className="active-tab">
+              <div className="tabs" role="tablist" aria-label="Waitlist views">
+                <button
+                  className="active-tab"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                >
                   Service Providers
                 </button>
 
-                <button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  disabled
+                >
                   Customers
                 </button>
               </div>
@@ -307,7 +320,8 @@ function App() {
             <input
               className="search-input"
               type="text"
-              placeholder="Search User"
+              aria-label="Search providers"
+              placeholder="Search providers"
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -331,9 +345,14 @@ function App() {
             onEdit={setSelectedProvider}
           />
 
-          <div className="pagination">
+          <nav
+            className="pagination"
+            aria-label="Provider pages"
+          >
 
             <button
+              type="button"
+              aria-label="Previous page"
               disabled={currentPage === 1}
               onClick={() =>
                 setCurrentPage(
@@ -350,6 +369,13 @@ function App() {
             ).map((page) => (
               <button
                 key={page}
+                type="button"
+                aria-label={`Go to page ${page}`}
+                aria-current={
+                  currentPage === page
+                    ? "page"
+                    : undefined
+                }
                 className={
                   currentPage === page
                     ? "active-page"
@@ -364,6 +390,8 @@ function App() {
             ))}
 
             <button
+              type="button"
+              aria-label="Next page"
               disabled={
                 currentPage === totalPages
               }
@@ -376,7 +404,7 @@ function App() {
               ›
             </button>
 
-          </div>
+          </nav>
 
         </main>
 
@@ -390,7 +418,11 @@ function App() {
       />
 
       {toast && (
-        <div className="toast">
+        <div
+          className="toast"
+          role="status"
+          aria-live="polite"
+        >
           {toast}
         </div>
       )}

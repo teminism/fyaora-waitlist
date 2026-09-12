@@ -65,12 +65,20 @@ function ProviderTable({
 
       <table>
 
+        <caption className="sr-only">
+          Service provider waitlist
+        </caption>
+
         <thead>
 
           <tr>
 
-            <th className="checkbox-column">
+            <th
+              className="checkbox-column"
+              scope="col"
+            >
               <input
+                aria-label="Select all providers on this page"
                 type="checkbox"
                 checked={allSelected}
                 onChange={onSelectAll}
@@ -80,17 +88,29 @@ function ProviderTable({
             {columns.map((column) => (
               <th
                 key={column.key}
-                onClick={() => onSort(column.key)}
+                scope="col"
+                aria-sort={
+                  sortConfig.key === column.key
+                    ? sortConfig.direction === "asc"
+                      ? "ascending"
+                      : "descending"
+                    : "none"
+                }
                 className="sortable"
               >
-                <div className="th-content">
-                  {column.label}
+                <button
+                  type="button"
+                  className="sort-button"
+                  aria-label={`Sort by ${column.label}`}
+                  onClick={() => onSort(column.key)}
+                >
+                  <span>{column.label}</span>
                   {renderSortIcon(column.key)}
-                </div>
+                </button>
               </th>
             ))}
 
-            <th>Actions</th>
+            <th scope="col">Actions</th>
 
           </tr>
 
@@ -103,6 +123,7 @@ function ProviderTable({
 
               <td>
                 <input
+                  aria-label={`Select ${provider.email}`}
                   type="checkbox"
                   checked={selectedIds.includes(provider.id)}
                   onChange={() =>
@@ -135,7 +156,9 @@ function ProviderTable({
 
               <td>
                 <button
+                  type="button"
                   className="edit-button"
+                  aria-label={`View details for ${provider.email}`}
                   onClick={() => onEdit(provider)}
                 >
                   <Edit size={15} />
@@ -150,7 +173,10 @@ function ProviderTable({
       </table>
 
       {providers.length === 0 && (
-        <div className="empty-state">
+        <div
+          className="empty-state"
+          role="status"
+        >
           No service providers found.
         </div>
       )}

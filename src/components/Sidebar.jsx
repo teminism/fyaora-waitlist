@@ -12,7 +12,10 @@ function Sidebar({
   };
 
   return (
-    <aside className="sidebar">
+    <aside
+      className="sidebar"
+      aria-label="Provider filters"
+    >
 
       <div className="brand">
         <span className="brand-mark">gler</span>
@@ -23,9 +26,10 @@ function Sidebar({
 
       <div className="filter-section">
 
-        <label>Postcode</label>
+        <label htmlFor="postcode">Postcode</label>
 
         <input
+          id="postcode"
           type="text"
           placeholder="ZIP"
           value={filters.postcode}
@@ -38,7 +42,7 @@ function Sidebar({
 
       <div className="filter-section">
 
-        <label>Registration Status</label>
+        <span className="filter-label">Registration Status</span>
 
         <label className="checkbox-label">
           <input
@@ -86,7 +90,7 @@ function Sidebar({
 
       <div className="filter-section">
 
-        <label>Date Registered</label>
+        <span className="filter-label">Date Registered</span>
 
         <div className="date-fields">
 
@@ -94,7 +98,9 @@ function Sidebar({
             <span>Start</span>
 
             <input
+              id="start-date"
               type="date"
+              aria-label="Registration start date"
               value={filters.startDate}
               onChange={(e) =>
                 handleChange("startDate", e.target.value)
@@ -106,7 +112,9 @@ function Sidebar({
             <span>End</span>
 
             <input
+              id="end-date"
               type="date"
+              aria-label="Registration end date"
               value={filters.endDate}
               onChange={(e) =>
                 handleChange("endDate", e.target.value)
@@ -120,7 +128,7 @@ function Sidebar({
 
       <div className="filter-section">
 
-        <label>Vendor Type</label>
+        <span className="filter-label">Vendor Type</span>
 
         {["Independent", "Company"].map((type) => (
           <label className="checkbox-label" key={type}>
@@ -151,7 +159,7 @@ function Sidebar({
 
       <div className="filter-section">
 
-        <label>Service Offering</label>
+        <span className="filter-label">Service Offering</span>
 
         {[
           "Housekeeping",
@@ -190,6 +198,7 @@ function Sidebar({
       <div className="filter-buttons">
 
         <button
+          type="button"
           className="filter-button"
           onClick={onApply}
         >
@@ -197,6 +206,7 @@ function Sidebar({
         </button>
 
         <button
+          type="button"
           className="clear-button"
           onClick={onClear}
         >
